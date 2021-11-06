@@ -87,6 +87,10 @@ impl Vec3 {
         f32::sqrt(self.square_len())
     }
 
+    pub fn to_unit(&self) -> Vec3 {
+       ( 1.0 / self.len()) * (*self)
+    }
+
     pub fn to_string(&self) -> String {
         format!("{} {} {}", self.x, self.y, self.z)
     }
@@ -163,7 +167,7 @@ impl ops::Div<Vec3> for f32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::model::vec3::Vec3;
+    use crate::vec3::*;
 
     #[test]
     fn eq() {
@@ -264,5 +268,21 @@ mod tests {
         let a = Vec3::from(12.0, -3.99, 7.778);
         let actual = a.to_string();
         assert_eq!("12 -3.99 7.778", actual)
+    }
+
+    #[test]
+    fn to_unit() {
+        // given
+        let a = Vec3::from_i32(3, 2, 1);
+        let a_len = a.len();
+        let expected = Vec3::from(
+            a.x / a_len,
+            a.y / a_len,
+            a.z / a_len
+        );
+        //when
+        let actual = a.to_unit();
+        // then
+        assert_eq!(expected, actual);
     }
 }
