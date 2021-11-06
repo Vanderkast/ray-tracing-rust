@@ -3,6 +3,7 @@ use std::io::Write;
 use std::ops;
 use std::path::Path;
 
+mod model;
 mod render;
 
 fn main() {

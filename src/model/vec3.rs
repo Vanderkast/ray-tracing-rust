@@ -88,11 +88,25 @@ impl Vec3 {
     }
 
     pub fn to_unit(&self) -> Vec3 {
-       ( 1.0 / self.len()) * (*self)
+        (1.0 / self.len()) * (*self)
     }
 
     pub fn to_string(&self) -> String {
         format!("{} {} {}", self.x, self.y, self.z)
+    }
+
+    pub fn dot_product(a: Vec3, b: Vec3) -> f32 {
+        a.x * b.x
+            + a.y * b.y
+            + a.z * b.z
+    }
+
+    pub fn cross_product(a: Vec3, b: Vec3) -> Vec3 {
+        Vec3 {
+            x: a.y * b.z - a.z * b.y,
+            y: a.x * b.z - a.z * b.x,
+            z: a.x * b.y - a.y * b.x
+        }
     }
 }
 
@@ -167,7 +181,7 @@ impl ops::Div<Vec3> for f32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::vec3::*;
+    use crate::model::vec3::Vec3;
 
     #[test]
     fn eq() {
@@ -278,10 +292,38 @@ mod tests {
         let expected = Vec3::from(
             a.x / a_len,
             a.y / a_len,
-            a.z / a_len
+            a.z / a_len,
         );
         //when
         let actual = a.to_unit();
+        // then
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn dot_product() {
+        // given
+        let a = Vec3::from(1.0, 0.0, -8.33);
+        let b = Vec3::from(-5.0, 2.0, 2.0);
+        let expected = (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+        // when
+        let actual = Vec3::dot_product(a, b);
+        // then
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn cross_product() {
+        // given
+        let a = Vec3::from_i32(1, 2, 3);
+        let b = Vec3::from_i32(2, 0, -1);
+        let expected = Vec3::from(
+            a.y * b.z - a.z * b.y,
+            a.x * b.z - a.z * b.x,
+            a.x * b.y - a.y * b.x
+        );
+        // when
+        let actual = Vec3::cross_product(a, b);
         // then
         assert_eq!(expected, actual);
     }

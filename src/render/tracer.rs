@@ -1,9 +1,10 @@
 use std::fs::{File, OpenOptions};
 use std::io::Write;
 use std::path::Path;
+use crate::model::ray::Ray;
 
-use crate::render::ray::Ray;
-use crate::render::vec3::Vec3;
+use crate::model::vec3::Vec3;
+
 
 fn prepare_render_image_file(path: &Path, width: i32, height: i32) -> File {
     let mut image = match OpenOptions::new()
