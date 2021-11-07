@@ -25,12 +25,6 @@ impl Ray {
     pub fn point_at(&self, t: f32) -> Vec3 {
         self.origin + t * self.direction
     }
-
-    pub fn pixel(&self) -> Vec3 {
-        let unit_direction = self.direction;
-        let t = 0.5 * (unit_direction.y() + 1.0);
-        (1.0 - t) * Vec3::one() + t * Vec3::from(0.5, 0.7, 1.0)
-    }
 }
 
 #[cfg(test)]

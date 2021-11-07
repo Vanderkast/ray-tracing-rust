@@ -49,6 +49,18 @@ impl Vec3 {
         }
     }
 
+    pub const ZERO: Vec3 = Vec3{
+        x: 0.0,
+        y: 0.0,
+        z: 0.0
+    };
+    pub const ONE: Vec3 = Vec3 {
+        x: 1.0,
+        y: 1.0,
+        z: 1.0
+    };
+
+    #[deprecated]
     pub fn zero() -> Self {
         Vec3 {
             x: 0.0,
@@ -57,6 +69,7 @@ impl Vec3 {
         }
     }
 
+    #[deprecated]
     pub fn one() -> Self {
         Vec3 {
             x: 1.0,
@@ -105,7 +118,7 @@ impl Vec3 {
         Vec3 {
             x: a.y * b.z - a.z * b.y,
             y: a.x * b.z - a.z * b.x,
-            z: a.x * b.y - a.y * b.x
+            z: a.x * b.y - a.y * b.x,
         }
     }
 }
@@ -175,6 +188,21 @@ impl ops::Div<Vec3> for f32 {
             x: self / rhs.x,
             y: self / rhs.y,
             z: self / rhs.z,
+        }
+    }
+}
+
+/// Right hand side offset operator + for vec3 oer f32
+/// v + n = w, for v: Vec3, w: Vec3, n: f32
+/// w = (v.x + n, v.y + n, b.z + n)
+impl ops::Add<f32> for Vec3 {
+    type Output = Vec3;
+
+    fn add(self, rhs: f32) -> Self::Output {
+        Vec3 {
+            x: self.x + rhs,
+            y: self.y + rhs,
+            z: self.z + rhs,
         }
     }
 }
@@ -320,11 +348,23 @@ mod tests {
         let expected = Vec3::from(
             a.y * b.z - a.z * b.y,
             a.x * b.z - a.z * b.x,
-            a.x * b.y - a.y * b.x
+            a.x * b.y - a.y * b.x,
         );
         // when
         let actual = Vec3::cross_product(a, b);
         // then
         assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn f32_offset() {
+        // given
+        let v = Vec3::from(1.0, 0.0, -7.6);
+        let n = 4.0;
+        let expected = Vec3::from(v.x() + n, v.y() + n, v.z() + n);
+        // when
+        let actual = v + n;
+        // then
+        assert_eq!(expected, actual)
     }
 }
